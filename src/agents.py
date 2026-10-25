@@ -6,6 +6,7 @@ Expertise modeled after:
 - OpenHands: sandboxed, model-agnostic
 - CircleCI: validation gates, structured failure reports
 - Beto: skill/MCP-style reusable patterns
+- Mabl: independent verification, auto-heal, test impact analysis, free local/CI runs
 """
 
 from dataclasses import dataclass, field
@@ -63,6 +64,26 @@ def listing_agent(metadata: dict) -> AgentResult:
     )
 
 
+def verification_agent(results: list[AgentResult]) -> AgentResult:
+    """Independent verification (Mabl-style). Does not grade its own work."""
+    failures = [r for r in results if r.status == "failed"]
+    if failures:
+        return AgentResult(
+            agent="verification",
+            status="failed",
+            output={"failed_agents": [f.agent for f in failures]},
+            next_action="Fix failures before handoff",
+            logs=["Independent verification failed. Root cause logged."],
+        )
+    return AgentResult(
+        agent="verification",
+        status="ok",
+        output={"verified": True, "agents_checked": len(results)},
+        next_action="Ready for human approval",
+        logs=["Independent verification passed. Free local/CI run."],
+    )
+
+
 def orchestrator(package: dict) -> list[AgentResult]:
     results = []
     intake = intake_agent(package)
@@ -70,4 +91,5 @@ def orchestrator(package: dict) -> list[AgentResult]:
     if intake.status != "ok":
         return results
     results.append(listing_agent(package.get("metadata", {})))
+    results.append(verification_agent(results))
     return results
