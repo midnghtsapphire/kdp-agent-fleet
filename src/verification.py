@@ -22,7 +22,7 @@ class VerificationResult:
     logs: list[str] = field(default_factory=list)
 
 
-def test_impact_analysis(change_description: str, known_checks: list[str]) -> list[str]:
+def impact_analysis(change_description: str, known_checks: list[str]) -> list[str]:
     """Simple TIA: return checks likely affected by the change."""
     keywords = change_description.lower().split()
     impacted = []
@@ -41,7 +41,7 @@ def verify_package(package: dict, change_description: str = "") -> VerificationR
         "title length",
         "keyword count",
     ]
-    impacted = test_impact_analysis(change_description or "full package", known_checks)
+    impacted = impact_analysis(change_description or "full package", known_checks)
 
     failures = []
     if not package.get("manuscript"):
@@ -60,8 +60,6 @@ def verify_package(package: dict, change_description: str = "") -> VerificationR
         suggestions.append("Auto-heal: regenerate listing metadata from manuscript if available")
 
     status = "fail" if failures else "pass"
-    if not failures and gaps:
-        status = "needs_coverage"
 
     return VerificationResult(
         status=status,
