@@ -1,11 +1,11 @@
 """Tests for independent verification layer."""
 
-from src.verification import verify_package, test_impact_analysis
+from src.verification import verify_package, impact_analysis
 
 
-def test_tia_finds_relevant():
+def test_impact_finds_relevant():
     checks = ["manuscript present", "cover present", "title length"]
-    impacted = test_impact_analysis("updated manuscript", checks)
+    impacted = impact_analysis("updated manuscript", checks)
     assert "manuscript present" in impacted
 
 
