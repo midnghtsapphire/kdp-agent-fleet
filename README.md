@@ -26,7 +26,8 @@ Handles preparation, validation, listing copy, review sequences, and sales monit
 | Team | $79/mo | BYOK + priority support |
 
 - No token markup. Buyer pays OpenRouter directly at provider rates.
-- Free models on OpenRouter work out of the box (rate-limited).
+- **First login requires a paid model** (e.g. `openai/gpt-4o-mini`). Free models are blocked until that first paid call succeeds.
+- **After the first paid login**, free models (`:free` suffix) are allowed immediately.
 - Optional: buyer can use their own OpenAI/Anthropic key via OpenRouter BYOK.
 - GitHub Marketplace: free plan + paid flat-rate plans.
 - Whop: same pricing, instant delivery of Docker + Action + docs.
@@ -43,6 +44,7 @@ git clone https://github.com/midnghtsapphire/kdp-agent-fleet.git
 cd kdp-agent-fleet
 cp .env.example .env
 # add your OPENROUTER_API_KEY
+# first call must use a paid model
 docker compose up --build
 ```
 
