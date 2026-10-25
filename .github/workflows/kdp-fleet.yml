@@ -1,0 +1,19 @@
+name: KDP Agent Fleet
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "What should the fleet do?"
+        required: true
+        default: "validate and generate listing"
+
+jobs:
+  run-fleet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run KDP Agent Fleet
+        run: |
+          echo "Running KDP Agent Fleet for: ${{ inputs.task }}"
+          # docker compose run --rm kdp-fleet or python -m src.main
