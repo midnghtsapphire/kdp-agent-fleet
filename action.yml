@@ -1,0 +1,26 @@
+name: 'KDP Agent Fleet'
+description: 'Run the KDP multi-agent fleet to validate, generate listing copy, and prepare publishing packages. Dockerized LangGraph agents with human approval gates.'
+author: 'midnghtsapphire'
+
+branding:
+  icon: 'book'
+  color: 'blue'
+
+inputs:
+  task:
+    description: 'What the fleet should do (e.g. validate, generate-listing, full-prep)'
+    required: true
+    default: 'full-prep'
+  openai_api_key:
+    description: 'OpenAI or compatible API key'
+    required: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.task }}
+
+outputs:
+  result:
+    description: 'Fleet execution summary'
