@@ -1,0 +1,10 @@
+services:
+  kdp-fleet:
+    build: .
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
