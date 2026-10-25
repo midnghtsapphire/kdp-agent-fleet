@@ -3,7 +3,7 @@
 ## Prime Directive
 Ship working, tested code and complete the KDP prep pipeline. Not plans. Working agents that validate, generate listing copy, and stop only at human approval gates.
 
-## Agent Roles (Expertise matched to high-end paid agents + Mabl)
+## Agent Roles (Expertise matched to high-end paid agents + Mabl + Cubic)
 
 ### Intake Agent
 - Validates manuscript (.docx/.epub), cover (size/DPI), and metadata sheet
@@ -36,12 +36,19 @@ Ship working, tested code and complete the KDP prep pipeline. Not plans. Working
 - MCP-ready: callable from coding agents for pre-PR verification
 - Modeled after Mabl's independent harness + Octopus's dedicated reviewer role
 
+### Swarm (Cubic-style + OpenRouter)
+- Parallel agents via ThreadPoolExecutor (expandable to thousands)
+- OpenRouter routing for model selection (`OPENROUTER_API_KEY`)
+- Aggregates findings from intake, listing, and independent verification
+- Marketplace-ready: drop-in for GitHub Action or Docker
+
 ### Orchestrator
 - Routes work between agents
 - Enforces human approval before any live action
 - Logs every decision with structured output
 - Self-heals: retries failed steps, escalates blockers
 - Calls Verification Agent before any handoff
+- Can dispatch to swarm for parallel passes
 
 ## How Agents Work
 - Execute autonomously until a human gate
@@ -50,6 +57,7 @@ Ship working, tested code and complete the KDP prep pipeline. Not plans. Working
 - Always leave a clear next action or approval request
 - Verification is independent of the agent that produced the output
 - Reviewer (Octopus-style) finds issues; implementer applies fixes
+- Swarm scales parallel checks the way Cubic does continuous scans
 
 ## Testing
 Run `pytest` before declaring complete. All agents must pass their unit tests.
